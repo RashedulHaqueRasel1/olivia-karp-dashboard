@@ -8,6 +8,7 @@ import {
   useMyProfile,
   useUpdateProfile,
   useChangePassword,
+  useUpdateAiData,
 } from "../hooks/useSettings";
 import type { UserProfile } from "../types/settings.types";
 
@@ -66,6 +67,7 @@ export default function SettingsPage() {
   const { data, isLoading } = useMyProfile();
   const updateProfileMutation = useUpdateProfile();
   const changePasswordMutation = useChangePassword();
+  const updateAiDataMutation = useUpdateAiData();
 
   const user: UserProfile | undefined = data?.data;
 
@@ -128,6 +130,17 @@ export default function SettingsPage() {
     }
   };
 
+  const handleUpdateAiData = async () => {
+    try {
+      const response = await updateAiDataMutation.mutateAsync();
+      toast.success(response?.message || "AI data updated successfully");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update AI data",
+      );
+    }
+  };
+
   const initials = user
     ? `${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`
     : "";
@@ -178,6 +191,16 @@ export default function SettingsPage() {
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold text-[#181919]">Settings</h1>
         <p className="text-base text-[#727272]">Dashboard &gt; Settings</p>
+      </div>
+
+      <div className="flex justify-end">
+        <Button
+          onClick={handleUpdateAiData}
+          disabled={updateAiDataMutation.isPending}
+          className="bg-[#004242] hover:bg-[#003535] text-[#f8fbfb] h-[52px] px-6 rounded-lg text-base font-black"
+        >
+          {updateAiDataMutation.isPending ? "Updating..." : "Update AI Data"}
+        </Button>
       </div>
 
       {/* Tabs */}

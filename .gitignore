@@ -9,8 +9,6 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-.env.local
-.env
 
 # testing
 /coverage
@@ -44,3 +42,4 @@ next-env.d.ts
 
 # ignore postman .json
 # Olivia_Karp.postman_collection.json
+config.bat
